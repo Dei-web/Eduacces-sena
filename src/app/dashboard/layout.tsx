@@ -1,9 +1,6 @@
-import {
-  SidebarProvider,
-  SidebarTrigger,
-  SidebarInset,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+// import { SiteHeader } from "@/components/header-dash";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,8 +13,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       }
     >
       <AppSidebar variant="offcanvas" />
-      <SidebarInset>
-        <main>{children}</main>
+      <SidebarInset className="flex flex-col h-full">
+        <main className="flex-1 overflow-auto">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

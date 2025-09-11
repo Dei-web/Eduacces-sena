@@ -50,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader className="flex gap-2 items-center flex-row">
-        <ThemeToggle className="rounded-3xl" />
+        {/* <ThemeToggle className="rounded-3xl" /> */}
         <SidebarMenuButton
           asChild
           className="data-[slot=sidebar-menu-button]:!p-1.5"
