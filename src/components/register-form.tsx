@@ -17,6 +17,15 @@ import { createPersona } from "@/api/PersonApi";
 import { IPersona } from "@/types/Person";
 import { useRouter } from "next/navigation";
 
+interface ICreatePersona {
+  nombre: string;
+  apellido: string;
+  documento: string;
+  correo: string;
+  telefono: string;
+  id_rol: number;
+}
+
 export function RegisterForm({ className }: React.ComponentProps<"form">) {
   const router = useRouter();
 
@@ -27,7 +36,6 @@ export function RegisterForm({ className }: React.ComponentProps<"form">) {
     correo: "",
     telefono: "",
     id_rol: "",
-    password: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,20 +50,20 @@ export function RegisterForm({ className }: React.ComponentProps<"form">) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const persona: IPersona & { password: string } = {
-      id_persona: 0,
+    const persona: ICreatePersona = {
       nombre: formData.nombre,
       apellido: formData.apellido,
       documento: formData.documento,
       correo: formData.correo,
       telefono: formData.telefono,
       id_rol: Number(formData.id_rol),
-      password: formData.password,
     };
 
     try {
-      const res = await createPersona(persona);
+      const res: IPersona = await createPersona(persona); // backend devuelve persona con id
       console.log("Persona creada:", res);
+
+      // Redirigir al dashboard
       router.push("/dashboard");
     } catch (err) {
       console.error("Error al crear persona:", err);
@@ -142,22 +150,11 @@ export function RegisterForm({ className }: React.ComponentProps<"form">) {
               <SelectValue placeholder="Select a role" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">Admin</SelectItem>
-              <SelectItem value="2">Student</SelectItem>
-              <SelectItem value="3">Teacher</SelectItem>
+              <SelectItem value="1">Directora</SelectItem>
+              <SelectItem value="2">Instructor/Profesor</SelectItem>
+              <SelectItem value="3">Estudiante</SelectItem>
             </SelectContent>
           </Select>
-        </div>
-
-        <div className="grid gap-3">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            onChange={handleChange}
-          />
         </div>
 
         <Button

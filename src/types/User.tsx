@@ -1,6 +1,5 @@
 export interface IUsers {
-  id: int;
-  name: string;
   email: string;
-  rol: string;
+  id_persona: int;
+  estado: bool;
 }

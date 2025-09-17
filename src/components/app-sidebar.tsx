@@ -1,27 +1,20 @@
-import {
-  Calendar,
-  Home,
-  GraduationCap,
-  Inbox,
-  Search,
-  Settings,
-} from "lucide-react";
-import Image from "next/image";
+"use client";
+
+import { User, Home, GraduationCap, Inbox, Settings } from "lucide-react";
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
   SidebarHeader,
+  SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
+import { useUser } from "@/context/userprop";
 
 const items = [
   {
@@ -35,9 +28,9 @@ const items = [
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Users",
+    url: "/dashboard/users",
+    icon: User,
   },
   {
     title: "Settings",
@@ -47,10 +40,11 @@ const items = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useUser();
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader className="flex gap-2 items-center flex-row">
-        {/* <ThemeToggle className="rounded-3xl" /> */}
         <SidebarMenuButton
           asChild
           className="data-[slot=sidebar-menu-button]:!p-1.5"
@@ -80,13 +74,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser
-          user={{
-            name: "Morty",
-            email: "Rick@test.com",
-            avatar: "https://github.com/shadcn.png",
-          }}
-        />
+        {user && (
+          <NavUser
+            user={{
+              name: `${user.nombre ?? ""} ${user.apellido ?? ""}`,
+              email: user.correo,
+              avatar: "https://github.com/shadcn.png", // 👈 aquí dejas la fija
+            }}
+          />
+        )}
       </SidebarFooter>
     </Sidebar>
   );

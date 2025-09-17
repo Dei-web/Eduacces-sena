@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  IconCreditCard,
   IconDotsVertical,
   IconLogout,
   IconNotification,
@@ -25,16 +24,20 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+import { useUser } from "@/context/userprop";
+import { useRouter } from "next/navigation";
+
+export function NavUser() {
+  const { user, logout } = useUser();
   const { isMobile } = useSidebar();
+  const router = useRouter();
+
+  if (!user) return null;
+
+  const handleLogout = () => {
+    logout();
+    router.push("/auth/login");
+  };
 
   return (
     <SidebarMenu>
@@ -46,13 +49,18 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage
+                  src={`https://ui-avatars.com/api/?name=${user.nombre}+${user.apellido}`}
+                  alt={user.nombre}
+                />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">
+                  {user.nombre} {user.apellido}
+                </span>
                 <span className="text-muted-foreground truncate text-xs">
-                  {user.email}
+                  {user.correo}
                 </span>
               </div>
               <IconDotsVertical className="ml-auto size-4" />
@@ -67,33 +75,35 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage
+                    src={`https://ui-avatars.com/api/?name=${user.nombre}+${user.apellido}`}
+                    alt={user.nombre}
+                  />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium">
+                    {user.nombre} {user.apellido}
+                  </span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
+                    {user.correo}
                   </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => alert(" Cuenta")}>
+              <DropdownMenuItem onClick={() => alert("Cuenta")}>
                 <IconUserCircle />
-                cuenta
+                Cuenta
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => alert(" Notificationes ")}>
+              <DropdownMenuItem onClick={() => alert("Notificaciones")}>
                 <IconNotification />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={() => alert("Cerrar sesión")}
-            >
+            <DropdownMenuItem variant="destructive" onClick={handleLogout}>
               <IconLogout />
               Log out
             </DropdownMenuItem>

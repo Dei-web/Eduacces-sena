@@ -3,10 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+interface LoginFormProps extends React.ComponentProps<"form"> {
+  email: string;
+  password: string;
+  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 export function LoginForm({
+  email,
+  password,
+  onEmailChange,
+  onPasswordChange,
   className,
   ...props
-}: React.ComponentProps<"form">) {
+}: LoginFormProps) {
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
@@ -21,8 +32,11 @@ export function LoginForm({
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
+            name="email"
             type="email"
             placeholder="usuario@sena.edu.co"
+            value={email || ""}
+            onChange={onEmailChange} // esto solo va en el Input
             required
           />
         </div>
@@ -37,7 +51,15 @@ export function LoginForm({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" placeholder="" required />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder=""
+            value={password || ""}
+            onChange={onPasswordChange} // esto solo va en el Input
+            required
+          />
         </div>
 
         <Button
