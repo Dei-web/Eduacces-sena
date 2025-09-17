@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { updateUser } from "@/api/UserApi";
-import { IUsers } from "@/types/user";
+import { UpdateUser } from "@/types/UserUpdate";
 import { IPersona } from "@/types/persona";
 import { getPersonas } from "@/api/PersonApi";
 
@@ -18,7 +18,7 @@ interface UpdateUserModalProps {
   open: boolean;
   onClose: () => void;
   onUpdated: () => void;
-  user: IUsers | null;
+  user: UpdateUser | null;
 }
 
 export default function UpdateUserModal({
@@ -46,7 +46,7 @@ export default function UpdateUserModal({
     if (user) {
       setFormData({
         correo: user.correo,
-        id_persona: user.id_persona,
+        id_persona: user.id_persona, // este viene de tu tipo UpdateUser
       });
     }
   }, [user]);
@@ -60,10 +60,18 @@ export default function UpdateUserModal({
   };
 
   const handleSubmit = async () => {
-    if (!formData.correo || !formData.id_persona || !user) return;
+    if (!formData.correo || formData.id_persona <= 0 || !user) {
+      console.warn("Formulario incompleto");
+      return;
+    }
 
     try {
-      await updateUser(user.id_user, formData);
+      // 👇 Ajustamos el body para que coincida con lo que espera el backend
+      await updateUser(user.id_user, {
+        correo: formData.correo,
+        persona: formData.id_persona, // el backend usa `persona`
+      });
+
       onUpdated();
       onClose();
     } catch (error) {
@@ -90,7 +98,6 @@ export default function UpdateUserModal({
           Editar Usuario
         </Typography>
 
-        {/* Correo */}
         <TextField
           id="correo"
           label="Correo"
@@ -100,18 +107,17 @@ export default function UpdateUserModal({
           margin="normal"
         />
 
-        {/* Persona */}
         <TextField
           id="id_persona"
           select
           label="Persona"
           fullWidth
-          value={formData.id_persona || ""}
+          value={formData.id_persona ? String(formData.id_persona) : ""}
           onChange={handleChange}
           margin="normal"
         >
           {personas.map((p) => (
-            <MenuItem key={p.id_persona} value={p.id_persona}>
+            <MenuItem key={p.id_persona} value={String(p.id_persona)}>
               {p.nombre} {p.apellido} - {p.documento}
             </MenuItem>
           ))}

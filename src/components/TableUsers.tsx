@@ -60,7 +60,7 @@ export default function UsersTable() {
         size: 200,
         enableClickToCopy: true,
       },
-      { accessorKey: "id_persona", header: "ID Persona", size: 120 },
+      { accessorKey: "persona", header: "Name", size: 120 },
       {
         id: "acciones",
         header: "Opciones",

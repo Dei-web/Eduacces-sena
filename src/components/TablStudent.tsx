@@ -100,40 +100,6 @@ export default function UsersTable() {
           </Box>
         ),
       },
-      {
-        id: "accionesu",
-        header: "Opciones Usuario",
-        size: 220,
-        Cell: ({ row }) => (
-          <Box sx={{ display: "flex", gap: "0.5rem" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={() => handleEdit(row.original)}
-            >
-              <EditIcon fontSize="small" />
-            </Button>
-
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => router.push("/auth/register")}
-            >
-              <AddIcon fontSize="small" />
-            </Button>
-
-            <Button
-              variant="contained"
-              color="error"
-              size="small"
-              onClick={() => handleDelete(row.original)}
-            >
-              <DeleteIcon fontSize="small" />
-            </Button>
-          </Box>
-        ),
-      },
     ],
     [],
   );
