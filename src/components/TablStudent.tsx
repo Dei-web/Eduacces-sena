@@ -94,6 +94,13 @@ export default function UsersTable() {
             >
               <DeleteIcon fontSize="small" />
             </Button>
+
+            <SecondaryButton
+              variant="default"
+              onClick={() => setOpenEnroll(true)}
+            >
+              <Fingerprint />
+            </SecondaryButton>
           </Box>
         ),
       },
@@ -118,20 +125,13 @@ export default function UsersTable() {
             >
               <AddIcon fontSize="small" />
             </Button>
-
-            <SecondaryButton
-              variant="default"
-              onClick={() => setOpenEnroll(true)}
-            >
-              <Fingerprint />
-            </SecondaryButton>
           </>
         )}
       />
       <EnrollFingerprintModal
         isOpen={openEnroll}
         onClose={() => setOpenEnroll(false)}
-        idPersona={personaId ?? 0}
+        idPersona={personaId}
       />
 
       <EditPersonaModal

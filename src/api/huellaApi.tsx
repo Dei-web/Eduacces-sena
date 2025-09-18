@@ -1,6 +1,9 @@
-const apiBase = "http://localhost:3000/huellas/enroll";
+const BASE_URL = "http://localhost:3000";
 
-export async function enrollHuella(idPersona: number) {
+export async function enrollHuella(
+  idPersona: number,
+  apiBase: string = BASE_URL,
+) {
   const res = await fetch(`${apiBase}/huellas/enroll`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

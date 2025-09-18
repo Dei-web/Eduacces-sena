@@ -14,7 +14,7 @@ export function useEnrollHuella(apiBase?: string) {
     setServerMsg(null);
 
     try {
-      await enrollHuella(idPersona, apiBase ?? "");
+      await enrollHuella(idPersona, apiBase);
       setStatus("success");
       if (onSuccess) onSuccess();
     } catch (err: any) {
