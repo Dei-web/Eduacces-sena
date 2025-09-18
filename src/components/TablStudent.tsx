@@ -35,8 +35,6 @@ export default function UsersTable() {
     setOpenEdit(true);
   };
 
-  const handleEnroll = () => {};
-
   const handleDelete = async (persona: IPersona) => {
     if (confirm(`¿Seguro que deseas eliminar a ${persona.nombre}?`)) {
       await deletePersona(persona.id_persona);

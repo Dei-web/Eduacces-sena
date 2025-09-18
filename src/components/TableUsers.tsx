@@ -6,7 +6,6 @@ import { Box, Button, Avatar } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 import { getUsers, deleteUser } from "@/api/UserApi";
 import { IUsers } from "@/types/user";
 import CreateUserModal from "@/components/modalCreateUser";
@@ -33,8 +32,8 @@ export default function UsersTable() {
   };
 
   const handleDelete = async (user: IUsers) => {
-    if (confirm(`¿Seguro que deseas eliminar a ${user.name}?`)) {
-      await deleteUser(user.id_persona);
+    if (confirm(`¿Seguro que deseas eliminar a ${user.id_user}?`)) {
+      await deleteUser(user.id_user);
       fetchUsers();
     }
   };
@@ -50,7 +49,7 @@ export default function UsersTable() {
           return (
             <Avatar
               src={`https://i.pravatar.cc/150?img=${avatarId}`}
-              alt={row.original.name}
+              alt={row.original.persona}
             />
           );
         },
@@ -61,7 +60,11 @@ export default function UsersTable() {
         size: 200,
         enableClickToCopy: true,
       },
-      { accessorKey: "persona", header: "Name", size: 120 },
+      {
+        accessorKey: "persona",
+        header: "Nombre",
+        size: 150,
+      },
       {
         id: "acciones",
         header: "Opciones",
