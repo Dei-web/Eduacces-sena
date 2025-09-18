@@ -97,7 +97,10 @@ export default function UsersTable() {
 
             <SecondaryButton
               variant="default"
-              onClick={() => setOpenEnroll(true)}
+              onClick={() => {
+                setOpenEnroll(true);
+                setPersonaId(row.original.id_persona);
+              }}
             >
               <Fingerprint />
             </SecondaryButton>
@@ -131,7 +134,7 @@ export default function UsersTable() {
       <EnrollFingerprintModal
         isOpen={openEnroll}
         onClose={() => setOpenEnroll(false)}
-        idPersona={personaId}
+        idPersona={personaId ?? 0}
       />
 
       <EditPersonaModal
