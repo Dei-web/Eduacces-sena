@@ -6,7 +6,9 @@ import { Box, Button, Avatar } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import { Button as SecondaryButton } from "@/components/ui/button";
+import { Fingerprint } from "lucide-react";
+import EnrollFingerprintModal from "@/components/EnrollFingerprintModal";
 import { useRouter } from "next/navigation";
 import { IPersona } from "@/types/Person";
 import { getPersonas, deletePersona } from "@/api/PersonApi";
@@ -16,6 +18,7 @@ export default function UsersTable() {
   const router = useRouter();
   const [data, setData] = useState<IPersona[]>([]);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openEnroll, setOpenEnroll] = useState(false);
   const [personaId, setPersonaId] = useState<number | null>(null);
 
   const fetchPersonas = async () => {
@@ -31,6 +34,8 @@ export default function UsersTable() {
     setPersonaId(persona.id_persona);
     setOpenEdit(true);
   };
+
+  const handleEnroll = () => {};
 
   const handleDelete = async (persona: IPersona) => {
     if (confirm(`¿Seguro que deseas eliminar a ${persona.nombre}?`)) {
@@ -105,14 +110,28 @@ export default function UsersTable() {
         data={data}
         paginationDisplayMode="pages"
         renderTopToolbarCustomActions={() => (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => router.push("/auth/register")}
-          >
-            <AddIcon fontSize="small" />
-          </Button>
+          <>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => router.push("/auth/register")}
+            >
+              <AddIcon fontSize="small" />
+            </Button>
+
+            <SecondaryButton
+              variant="default"
+              onClick={() => setOpenEnroll(true)}
+            >
+              <Fingerprint />
+            </SecondaryButton>
+          </>
         )}
+      />
+      <EnrollFingerprintModal
+        isOpen={openEnroll}
+        onClose={() => setOpenEnroll(false)}
+        idPersona={personaId ?? 0}
       />
 
       <EditPersonaModal

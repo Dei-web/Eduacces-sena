@@ -41,7 +41,7 @@ const items = [
   ,
   {
     title: "Huella",
-    url: "#",
+    url: "/dashboard/huella",
     icon: Fingerprint,
   },
 ];

@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -26,14 +27,14 @@ export function SiteHeader({
           className="mx-2 data-[orientation=vertical]:h-4"
         />
 
-        <Button
-          variant="default"
-          className="bg-green-200 hover:bg-green-400"
-          onClick={() => setIsModalOpen(true)}
-        >
-          <Fingerprint className="w-4 h-4" />
-          Huella
-        </Button>
+        {/* <Button */}
+        {/*   variant="default" */}
+        {/*   className="bg-green-200 hover:bg-green-400" */}
+        {/*   onClick={() => setIsModalOpen(true)} */}
+        {/* > */}
+        {/*   <Fingerprint className="w-4 h-4" /> */}
+        {/*   Huella */}
+        {/* </Button> */}
 
         <div className="ml-auto flex items-center gap-2">
           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
