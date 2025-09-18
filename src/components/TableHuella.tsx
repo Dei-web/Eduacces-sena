@@ -8,7 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Fingerprint } from "lucide-react";
 
-import { getUsers, deleteUser } from "@/api/UserApi";
+import { enrollHuella, deleteEnrollHuella, HuellaGet } from "@/api/huellaApi";
 import { IHuella } from "@/types/huella";
 import EnrollFingerprintModal from "@/components/EnrollFingerprintModal";
 
@@ -18,14 +18,21 @@ export default function TableTable() {
   const [openCreate, setOpenCreate] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUsers | null>(null);
 
-  // const fetchUsers = async () => {
-  //   const users = await getUsers();
-  //   setData(users);
-  // };
+  const fetchUsers = async () => {
+    const users = await HuellaGet();
+    setData(users);
+  };
 
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleDelete = async (user: IUsers) => {
+    if (confirm(`¿Seguro que deseas eliminar a ${user.name}?`)) {
+      await deleteEnrollHuella(user.id_persona);
+      fetchUsers();
+    }
+  };
 
   const columns = useMemo<MRT_ColumnDef<IUsers>[]>(
     () => [
