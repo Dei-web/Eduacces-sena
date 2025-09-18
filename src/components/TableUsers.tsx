@@ -17,6 +17,7 @@ export default function UsersTable() {
   const [openEdit, setOpenEdit] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUsers | null>(null);
+
   const fetchUsers = async () => {
     const users = await getUsers();
     setData(users);
@@ -64,25 +65,16 @@ export default function UsersTable() {
       {
         id: "acciones",
         header: "Opciones",
-        size: 250,
+        size: 200,
         Cell: ({ row }) => (
           <Box sx={{ display: "flex", gap: "0.5rem" }}>
             <Button
               variant="contained"
               color="primary"
               size="small"
-              onClick={() => handleEdit(row.original)} // pasa el user
+              onClick={() => handleEdit(row.original)}
             >
               <EditIcon fontSize="small" />
-            </Button>
-
-            <Button
-              variant="contained"
-              color="success"
-              size="small"
-              onClick={() => setOpenCreate(true)}
-            >
-              <AddIcon fontSize="small" />
             </Button>
 
             <Button
@@ -108,6 +100,16 @@ export default function UsersTable() {
         columns={columns}
         data={data}
         paginationDisplayMode="pages"
+        renderTopToolbarCustomActions={() => (
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => setOpenCreate(true)}
+            startIcon={<AddIcon />}
+          >
+            Crear Usuario
+          </Button>
+        )}
       />
 
       {/* Modal editar usuario */}

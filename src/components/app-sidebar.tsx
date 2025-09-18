@@ -1,6 +1,7 @@
 "use client";
 
 import { User, Home, GraduationCap, Inbox, Settings } from "lucide-react";
+import { Fingerprint } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -36,6 +37,12 @@ const items = [
     title: "Settings",
     url: "#",
     icon: Settings,
+  },
+  ,
+  {
+    title: "Huella",
+    url: "#",
+    icon: Fingerprint,
   },
 ];
 

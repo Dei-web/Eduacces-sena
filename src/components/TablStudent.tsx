@@ -83,14 +83,6 @@ export default function UsersTable() {
 
             <Button
               variant="contained"
-              color="success"
-              onClick={() => router.push("/auth/register")}
-            >
-              <AddIcon fontSize="small" />
-            </Button>
-
-            <Button
-              variant="contained"
               color="error"
               size="small"
               onClick={() => handleDelete(row.original)}
@@ -112,6 +104,15 @@ export default function UsersTable() {
         columns={columns}
         data={data}
         paginationDisplayMode="pages"
+        renderTopToolbarCustomActions={() => (
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => router.push("/auth/register")}
+          >
+            <AddIcon fontSize="small" />
+          </Button>
+        )}
       />
 
       <EditPersonaModal
