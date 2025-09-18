@@ -9,23 +9,23 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Fingerprint } from "lucide-react";
 
 import { getUsers, deleteUser } from "@/api/UserApi";
-import { IUsers } from "@/types/user";
+import { IHuella } from "@/types/huella";
 import EnrollFingerprintModal from "@/components/EnrollFingerprintModal";
 
-export default function UsersTable() {
+export default function TableTable() {
   const [data, setData] = useState<IUsers[]>([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUsers | null>(null);
 
-  const fetchUsers = async () => {
-    const users = await getUsers();
-    setData(users);
-  };
+  // const fetchUsers = async () => {
+  //   const users = await getUsers();
+  //   setData(users);
+  // };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
 
   const columns = useMemo<MRT_ColumnDef<IUsers>[]>(
     () => [
@@ -44,10 +44,9 @@ export default function UsersTable() {
         },
       },
       {
-        accessorKey: "correo",
-        header: "Correo",
+        accessorKey: "id_sensor",
+        header: "Id_seensor",
         size: 200,
-        enableClickToCopy: true,
       },
       { accessorKey: "persona", header: "Name", size: 120 },
       {
@@ -88,31 +87,6 @@ export default function UsersTable() {
         columns={columns}
         data={data}
         paginationDisplayMode="pages"
-        renderTopToolbarCustomActions={() => (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => setOpenCreate(true)}
-            startIcon={<AddIcon />}
-          >
-            <Fingerprint />
-          </Button>
-        )}
-      />
-
-      {/* Modal editar usuario */}
-      <UpdateUserModal
-        open={openEdit}
-        onClose={() => setOpenEdit(false)}
-        user={selectedUser}
-        onUpdated={fetchUsers}
-      />
-
-      {/* Modal crear usuario */}
-      <CreateUserModal
-        open={openCreate}
-        onClose={() => setOpenCreate(false)}
-        onCreated={fetchUsers}
       />
     </>
   );

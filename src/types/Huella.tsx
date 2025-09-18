@@ -1,6 +1,6 @@
 export interface Ihuella {
   id_sensor: number;
-  id_persona: number;
+  persona: string;
 }
 
 // 127 memory space
