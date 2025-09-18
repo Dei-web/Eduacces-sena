@@ -13,7 +13,7 @@ import { IHuella } from "@/types/huella";
 import EnrollFingerprintModal from "@/components/EnrollFingerprintModal";
 
 export default function TableTable() {
-  const [data, setData] = useState<IUsers[]>([]);
+  const [data, setData] = useState<IHuella[]>([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUsers | null>(null);
@@ -27,14 +27,14 @@ export default function TableTable() {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (user: IUsers) => {
+  const handleDelete = async (user: IHuella) => {
     if (confirm(`¿Seguro que deseas eliminar a ${user.name}?`)) {
       await deleteEnrollHuella(user.id_persona);
       fetchUsers();
     }
   };
 
-  const columns = useMemo<MRT_ColumnDef<IUsers>[]>(
+  const columns = useMemo<MRT_ColumnDef<IHuella>[]>(
     () => [
       {
         id: "perfil",
