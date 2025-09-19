@@ -8,7 +8,9 @@ function getAuthHeader() {
   };
 }
 
-export async function getUsers(apiBase: string = BASE_URL): Promise<Ihuella[]> {
+export async function HuellaGet(
+  apiBase: string = BASE_URL,
+): Promise<Ihuella[]> {
   const res = await fetch(`${apiBase}/huella-map`, {
     headers: {
       "Content-Type": "application/json",

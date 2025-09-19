@@ -1,5 +1,5 @@
 "use client";
-
+import Swal from "sweetalert2";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -21,16 +21,43 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
 
+    Swal.fire({
+      title: "Iniciando sesión...",
+      text: "Por favor espera",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       const data = await loginUser(email, password);
       setUser(data.user, data.token);
-      if (data.user.rol == "directora") {
-        router.push("/dashboard");
+
+      Swal.close(); // cierra el loading
+
+      Swal.fire({
+        title: "¡Bienvenido!",
+        text: `Usuario ${data.user.nombre} `,
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      if (data.user.rol === "directora") {
+        setTimeout(() => router.push("/dashboard"), 1200);
       }
-      console.log("Usuario logeado:", data.user);
-      alert("user logeado");
     } catch (err: any) {
       setError(err.message || "Error al iniciar sesión");
+
+      Swal.close();
+
+      Swal.fire({
+        title: "Error",
+        text: err.message || "Error al iniciar sesión",
+        icon: "error",
+        confirmButtonText: "Reintentar",
+      });
     } finally {
       setLoading(false);
     }

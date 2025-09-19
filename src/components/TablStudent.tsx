@@ -1,12 +1,13 @@
 "use client";
-
+import Swal from "sweetalert2";
+import { motion } from "motion/react";
 import { useEffect, useMemo, useState } from "react";
 import { MaterialReactTable, type MRT_ColumnDef } from "material-react-table";
-import { Box, Button, Avatar } from "@mui/material";
+import { Box, Avatar } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button as SecondaryButton } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Fingerprint } from "lucide-react";
 import EnrollFingerprintModal from "@/components/EnrollFingerprintModal";
 import { useRouter } from "next/navigation";
@@ -36,9 +37,36 @@ export default function UsersTable() {
   };
 
   const handleDelete = async (persona: IPersona) => {
-    if (confirm(`¿Seguro que deseas eliminar a ${persona.nombre}?`)) {
-      await deletePersona(persona.id_persona);
-      fetchPersonas();
+    const result = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: `Se eliminará a ${persona.nombre}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deletePersona(persona.id_persona);
+        await fetchPersonas();
+
+        Swal.fire({
+          title: "Eliminado",
+          text: `${persona.nombre} fue eliminado correctamente`,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo eliminar el registro",
+          icon: "error",
+        });
+      }
     }
   };
 
@@ -76,32 +104,45 @@ export default function UsersTable() {
         Cell: ({ row }) => (
           <Box sx={{ display: "flex", gap: "0.5rem" }}>
             <Button
-              variant="contained"
-              color="primary"
-              size="small"
+              className=" bg-green-400 hover:bg-green-700"
+              variant="default"
               onClick={() => handleEdit(row.original)}
             >
-              <EditIcon fontSize="small" />
+              <motion.div
+                whileHover={{ y: -3 }}
+                whileTap={{ rotate: -15 }}
+                transition={{ type: "spring", stiffness: 200 }}
+              >
+                <EditIcon fontSize="small" />
+              </motion.div>
             </Button>
 
             <Button
-              variant="contained"
-              color="error"
-              size="small"
+              variant="destructive"
               onClick={() => handleDelete(row.original)}
             >
-              <DeleteIcon fontSize="small" />
+              <motion.div
+                whileTap={{ y: 20, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <DeleteIcon fontSize="small" />
+              </motion.div>
             </Button>
 
-            <SecondaryButton
+            <Button
               variant="default"
               onClick={() => {
                 setOpenEnroll(true);
                 setPersonaId(row.original.id_persona);
               }}
             >
-              <Fingerprint />
-            </SecondaryButton>
+              <motion.div
+                whileHover={{ scale: 1.2, rotate: 5, color: "#fff" }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <Fingerprint />
+              </motion.div>
+            </Button>
           </Box>
         ),
       },
@@ -120,11 +161,12 @@ export default function UsersTable() {
         renderTopToolbarCustomActions={() => (
           <>
             <Button
-              variant="contained"
-              color="success"
+              className="bg-green-400 hover:bg-green-600 rounded-2xl"
+              variant="default"
               onClick={() => router.push("/auth/register")}
             >
               <AddIcon fontSize="small" />
+              create User
             </Button>
           </>
         )}
