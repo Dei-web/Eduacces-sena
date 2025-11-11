@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="offcanvas" />
+      <AppSidebar collapsible="offcanvas" />
       <SidebarInset className="flex flex-col h-full">
         <main className="flex-1 overflow-auto">{children}</main>
       </SidebarInset>

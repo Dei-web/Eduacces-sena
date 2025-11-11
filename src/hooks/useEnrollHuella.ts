@@ -17,9 +17,16 @@ export function useEnrollHuella(apiBase?: string) {
       await enrollHuella(idPersona, apiBase);
       setStatus("success");
       if (onSuccess) onSuccess();
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatus("error");
-      setServerMsg(err?.message || "Error desconocido");
+
+      if (err instanceof Error) {
+        setServerMsg(err.message);
+      } else if (typeof err === "string") {
+        setServerMsg(err);
+      } else {
+        setServerMsg("Error desconocido");
+      }
     }
   };
 

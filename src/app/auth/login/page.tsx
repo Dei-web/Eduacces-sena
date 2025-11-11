@@ -2,6 +2,7 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LoginForm } from "@/components/login-form";
 import { loginUser } from "@/api/loginAunt";
@@ -12,7 +13,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
   const { setUser } = useUser();
 
@@ -33,7 +33,6 @@ export default function LoginPage() {
     try {
       const data = await loginUser(email, password);
       setUser(data.user, data.token);
-
       Swal.close(); // cierra el loading
 
       Swal.fire({
@@ -47,14 +46,15 @@ export default function LoginPage() {
       if (data.user.rol === "directora") {
         setTimeout(() => router.push("/dashboard"), 1200);
       }
-    } catch (err: any) {
-      setError(err.message || "Error al iniciar sesión");
-
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Error al iniciar sesión";
+      setError(errorMessage);
       Swal.close();
 
       Swal.fire({
         title: "Error",
-        text: err.message || "Error al iniciar sesión",
+        text: errorMessage,
         icon: "error",
         confirmButtonText: "Reintentar",
       });
@@ -90,10 +90,13 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">
-        <img
+        <Image
           src="/tecnologia.jpg"
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.5]"
+          alt="Technology background"
+          fill
+          className="object-cover dark:brightness-[0.5]"
+          priority
+          sizes="(max-width: 1024px) 0vw, 50vw"
         />
       </div>
     </div>

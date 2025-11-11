@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Modal, Box, TextField, Button, Typography } from "@mui/material";
 import { getPersonas, updatePersona } from "@/api/PersonApi";
-import { IPersona } from "@/types/persona";
+import { IPersona, IPersonaUpdate } from "@/types/Person";
 
 interface EditPersonaModalProps {
   open: boolean;
@@ -18,7 +18,16 @@ export default function EditPersonaModal({
   personaId,
   onUpdated,
 }: EditPersonaModalProps) {
-  const [formData, setFormData] = useState<Partial<IPersona>>({});
+  // Mantener estado completo con IPersona
+  const [formData, setFormData] = useState<IPersona>({
+    id_persona: 0,
+    documento: "",
+    nombre: "",
+    apellido: "",
+    correo: "",
+    telefono: "",
+    rol: "",
+  });
 
   useEffect(() => {
     if (open && personaId) {
@@ -37,7 +46,8 @@ export default function EditPersonaModal({
   const handleSubmit = async () => {
     if (!personaId) return;
 
-    const updateData = {
+    // Extraer solo los campos para actualización
+    const updateData: IPersonaUpdate = {
       nombre: formData.nombre,
       apellido: formData.apellido,
       documento: formData.documento,
@@ -72,7 +82,7 @@ export default function EditPersonaModal({
           id="nombre"
           label="Nombre"
           fullWidth
-          value={formData.nombre || ""}
+          value={formData.nombre}
           onChange={handleChange}
           margin="normal"
         />
@@ -80,7 +90,7 @@ export default function EditPersonaModal({
           id="apellido"
           label="Apellido"
           fullWidth
-          value={formData.apellido || ""}
+          value={formData.apellido}
           onChange={handleChange}
           margin="normal"
         />
@@ -88,7 +98,7 @@ export default function EditPersonaModal({
           id="documento"
           label="Documento"
           fullWidth
-          value={formData.documento || ""}
+          value={formData.documento}
           onChange={handleChange}
           margin="normal"
         />
@@ -96,7 +106,7 @@ export default function EditPersonaModal({
           id="correo"
           label="Correo"
           fullWidth
-          value={formData.correo || ""}
+          value={formData.correo}
           onChange={handleChange}
           margin="normal"
         />
@@ -104,7 +114,7 @@ export default function EditPersonaModal({
           id="telefono"
           label="Teléfono"
           fullWidth
-          value={formData.telefono || ""}
+          value={formData.telefono}
           onChange={handleChange}
           margin="normal"
         />

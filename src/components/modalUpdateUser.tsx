@@ -10,15 +10,16 @@ import {
   MenuItem,
 } from "@mui/material";
 import { updateUser } from "@/api/UserApi";
-import { UpdateUser } from "@/types/UserUpdate";
-import { IPersona } from "@/types/persona";
+import { IUserUpdateRequest } from "@/types/UserUpdate";
+import { IPersona } from "@/types/Person";
+import { IUsers } from "@/types/User";
 import { getPersonas } from "@/api/PersonApi";
 
 interface UpdateUserModalProps {
   open: boolean;
   onClose: () => void;
   onUpdated: () => void;
-  user: UpdateUser | null;
+  user: IUserUpdateRequest | IUsers | null;
 }
 
 export default function UpdateUserModal({
@@ -34,19 +35,15 @@ export default function UpdateUserModal({
 
   const [personas, setPersonas] = useState<IPersona[]>([]);
 
-  // Cargar personas cuando se abre el modal
   useEffect(() => {
-    if (open) {
-      getPersonas().then(setPersonas);
-    }
+    if (open) getPersonas().then(setPersonas);
   }, [open]);
 
-  // Actualizar formulario cuando cambia el usuario
   useEffect(() => {
     if (user) {
       setFormData({
         correo: user.correo,
-        id_persona: user.id_persona, // este viene de tu tipo UpdateUser
+        id_persona: user.id_persona,
       });
     }
   }, [user]);
@@ -60,16 +57,15 @@ export default function UpdateUserModal({
   };
 
   const handleSubmit = async () => {
-    if (!formData.correo || formData.id_persona <= 0 || !user) {
+    if (!formData.correo || !user) {
       console.warn("Formulario incompleto");
       return;
     }
 
     try {
-      // 👇 Ajustamos el body para que coincida con lo que espera el backend
       await updateUser(user.id_user, {
         correo: formData.correo,
-        persona: formData.id_persona, // el backend usa `persona`
+        id_persona: formData.id_persona,
       });
 
       onUpdated();
@@ -123,7 +119,6 @@ export default function UpdateUserModal({
           ))}
         </TextField>
 
-        {/* Botones */}
         <Box mt={2} display="flex" justifyContent="space-between">
           <Button variant="outlined" color="secondary" onClick={onClose}>
             Cancelar

@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { X, Fingerprint, CheckCircle, AlertCircle } from "lucide-react";
 
-export default function FingerprintModal({ isOpen, onClose }) {
+interface FingerprintModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function FingerprintModal({
+  isOpen,
+  onClose,
+}: FingerprintModalProps) {
   const [scanStatus, setScanStatus] = useState("idle");
   const [progress, setProgress] = useState(0);
 

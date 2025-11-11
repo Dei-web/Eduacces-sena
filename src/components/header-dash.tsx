@@ -3,8 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import FingerprintModal from "@/components/modalHuella";
-import { Fingerprint } from "lucide-react";
 import { useState } from "react";
+
+interface SiteHeaderProps {
+  title: string;
+  Link?: string;
+  LinkName?: string;
+}
 
 export function SiteHeader({
   title = "Header - eduacces",
@@ -14,7 +19,7 @@ export function SiteHeader({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+    <header className="flex h-[var(--header-height)] shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-[var(--header-height)]">
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <Separator
@@ -26,16 +31,6 @@ export function SiteHeader({
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-
-        {/* <Button */}
-        {/*   variant="default" */}
-        {/*   className="bg-green-200 hover:bg-green-400" */}
-        {/*   onClick={() => setIsModalOpen(true)} */}
-        {/* > */}
-        {/*   <Fingerprint className="w-4 h-4" /> */}
-        {/*   Huella */}
-        {/* </Button> */}
-
         <div className="ml-auto flex items-center gap-2">
           <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
             <a
@@ -49,7 +44,6 @@ export function SiteHeader({
           </Button>
         </div>
       </div>
-
       {/* Renderizas el modal aquí */}
       {isModalOpen && (
         <FingerprintModal

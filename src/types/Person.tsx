@@ -5,5 +5,13 @@ export interface IPersona {
   apellido: string;
   correo: string;
   telefono: string;
-  id_rol: number;
+  rol: string;
+}
+
+export interface IPersonaUpdate {
+  documento: string;
+  nombre: string;
+  apellido: string;
+  correo: string;
+  telefono: string;
 }

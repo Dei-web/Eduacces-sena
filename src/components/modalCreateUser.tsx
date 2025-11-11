@@ -10,7 +10,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { createUser } from "@/api/UserApi";
-import { IPersona } from "@/types/persona";
+import { IPersona } from "@/types/Person";
 import { getPersonas } from "@/api/PersonApi";
 
 interface CreateUserModalProps {
@@ -66,7 +66,6 @@ export default function CreateUserModal({
   };
 
   const handleSubmit = async () => {
-    console.log("🔔 Guardar pulsado. formData actual:", formData); // <- siempre verás esto
     // validación simple
     if (!formData.correo || !formData.password || !formData.id_persona) {
       console.warn("Faltan campos obligatorios:", formData);

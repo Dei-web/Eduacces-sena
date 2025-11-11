@@ -15,16 +15,8 @@ import {
 import { useState } from "react";
 import { createPersona } from "@/api/PersonApi";
 import { IPersona } from "@/types/Person";
+import { ICreatePersona } from "@/types/PersonCreate";
 import { useRouter } from "next/navigation";
-
-interface ICreatePersona {
-  nombre: string;
-  apellido: string;
-  documento: string;
-  correo: string;
-  telefono: string;
-  id_rol: number;
-}
 
 export function RegisterForm({ className }: React.ComponentProps<"form">) {
   const router = useRouter();
@@ -60,10 +52,8 @@ export function RegisterForm({ className }: React.ComponentProps<"form">) {
     };
 
     try {
-      const res: IPersona = await createPersona(persona); // backend devuelve persona con id
+      const res: IPersona = await createPersona(persona);
       console.log("Persona creada:", res);
-
-      // Redirigir al dashboard
       router.push("/dashboard");
     } catch (err) {
       console.error("Error al crear persona:", err);
@@ -138,10 +128,10 @@ export function RegisterForm({ className }: React.ComponentProps<"form">) {
           />
         </div>
 
+        {/* ✅ Select corregido */}
         <div className="grid gap-3">
           <Label htmlFor="rol">Role</Label>
           <Select
-            className="w-full"
             value={formData.id_rol}
             onValueChange={handleSelectChange}
             required

@@ -1,95 +1,169 @@
 "use client";
 
-import { User, Home, GraduationCap, Inbox, Settings } from "lucide-react";
+import * as React from "react";
+import {
+  IconCamera,
+  IconDashboard,
+  IconFileAi,
+  IconFileDescription,
+  IconHelp,
+  IconInnerShadowTop,
+  IconListDetails,
+  IconReport,
+  IconCalendar,
+  IconSettings,
+  IconUsers,
+} from "@tabler/icons-react";
 import { Fingerprint } from "lucide-react";
-import Link from "next/link";
+import { FaUserCircle } from "react-icons/fa";
+
+import { NavDocuments } from "@/components/nav-documents";
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/segundary-nav";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { NavUser } from "@/components/nav-user";
-import { useUser } from "@/context/userprop";
 
-const items = [
-  {
-    title: "Home",
-    url: "/dashboard",
-    icon: Home,
+const data = {
+  user: {
+    name: "shadcn",
+    email: "m@example.com",
+    avatar: "/avatars/shadcn.jpg",
   },
-  {
-    title: "Reports",
-    url: "/dashboard/reports",
-    icon: Inbox,
-  },
-  {
-    title: "Users",
-    url: "/dashboard/users",
-    icon: User,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-  ,
-  {
-    title: "Huella",
-    url: "/dashboard/huella",
-    icon: Fingerprint,
-  },
-];
+  navMain: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: IconDashboard,
+    },
+    {
+      title: "inventario",
+      url: "#",
+      icon: IconListDetails,
+    },
+
+    {
+      title: "citas",
+      url: "#",
+      icon: IconCalendar,
+    },
+    {
+      title: "equipo",
+      url: "#",
+      icon: IconUsers,
+    },
+  ],
+  navClouds: [
+    {
+      title: "Capture",
+      icon: IconCamera,
+      isActive: true,
+      url: "#",
+      items: [
+        {
+          title: "Active Proposals",
+          url: "#",
+        },
+        {
+          title: "Archived",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Proposal",
+      icon: IconFileDescription,
+      url: "#",
+      items: [
+        {
+          title: "Active Proposals",
+          url: "#",
+        },
+        {
+          title: "Archived",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Prompts",
+      icon: IconFileAi,
+      url: "#",
+      items: [
+        {
+          title: "Active Proposals",
+          url: "#",
+        },
+        {
+          title: "Archived",
+          url: "#",
+        },
+      ],
+    },
+  ],
+  navSecondary: [
+    {
+      title: "Ajustes",
+      url: "#",
+      icon: IconSettings,
+    },
+    {
+      title: "Guia",
+      url: "#",
+      icon: IconHelp,
+    },
+  ],
+  documents: [
+    {
+      name: "users",
+      url: "/dashboard/users",
+      icon: FaUserCircle,
+    },
+    {
+      name: "Reportes",
+      url: "/dashboard/reports",
+      icon: IconReport,
+    },
+    {
+      name: "Huella",
+      url: "/hola",
+      icon: Fingerprint,
+    },
+  ],
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user } = useUser();
-
   return (
     <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader className="flex gap-2 items-center flex-row">
-        <SidebarMenuButton
-          asChild
-          className="data-[slot=sidebar-menu-button]:!p-1.5"
-        >
-          <a href="#">
-            <GraduationCap className="!size-5 text-blue-500" />
-            <span className="text-base font-semibold">Eduacces</span>
-          </a>
-        </SidebarMenuButton>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:!p-1.5"
+            >
+              <a href="#">
+                <IconInnerShadowTop className="!size-5" />
+                <span className="text-base font-semibold">Eduacces.</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <Link href={item.url} className="flex items-center gap-2">
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <NavMain items={data.navMain} />
+        <NavDocuments items={data.documents} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        {user && (
-          <NavUser
-            user={{
-              name: `${user.nombre ?? ""} ${user.apellido ?? ""}`,
-              email: user.correo,
-              avatar: "https://github.com/shadcn.png", // 👈 aquí dejas la fija
-            }}
-          />
-        )}
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
