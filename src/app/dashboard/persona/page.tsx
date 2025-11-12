@@ -5,7 +5,7 @@ const TT = dynamic(() => import("@/components/TablStudent"), {
   ssr: false,
 });
 
-export default function Dashboard() {
+export default function Personas() {
   return (
     <>
       <div className="flex flex-1 flex-col">
@@ -13,7 +13,11 @@ export default function Dashboard() {
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             <div className="px-4 lg:px-6">{/* <h1>hola</h1> */}</div>
-            <div className="px-4 lg:px-6"> {/* <ChartBarMultiple /> */}</div>
+            <div className="px-4 lg:px-6">
+              {" "}
+              <TT />
+              {/* <ChartBarMultiple /> */}
+            </div>
           </div>
         </div>
       </div>

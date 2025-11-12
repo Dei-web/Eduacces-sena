@@ -303,7 +303,7 @@ export default function UsersTable() {
           <div>
             <h1 className="text-3xl font-semibold text-gray-900">Usuarios</h1>
             <p className="mt-1 text-sm text-gray-500">
-              Gestiona los usuarios del sistema
+              Gestiona las personas del sistema
             </p>
           </div>
           <Button
@@ -311,7 +311,7 @@ export default function UsersTable() {
             onClick={() => router.push("/auth/register")}
           >
             <Plus className="h-4 w-4" />
-            Crear Usuario
+            Crear Persona
           </Button>
         </div>
 

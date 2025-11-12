@@ -44,19 +44,24 @@ const data = {
       icon: IconDashboard,
     },
     {
-      title: "inventario",
+      title: "profesores",
       url: "#",
       icon: IconListDetails,
     },
 
     {
-      title: "citas",
+      title: "fichas",
       url: "#",
       icon: IconCalendar,
     },
     {
-      title: "equipo",
-      url: "#",
+      title: "Personas",
+      url: "/dashboard/persona",
+      icon: IconUsers,
+    },
+    {
+      title: "Asistencia",
+      url: "/dashboard/asistencias",
       icon: IconUsers,
     },
   ],
@@ -133,7 +138,7 @@ const data = {
     },
     {
       name: "Huella",
-      url: "/hola",
+      url: "/dashboard/huella",
       icon: Fingerprint,
     },
   ],
