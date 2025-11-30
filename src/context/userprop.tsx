@@ -41,7 +41,22 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     else localStorage.removeItem("token");
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      if (token) {
+        await fetch("http://localhost:3000/auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // 👈 obligatorio
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+
+    // limpiar estado local pase lo que pase
     setUserState(null);
     setToken(null);
     localStorage.removeItem("user");

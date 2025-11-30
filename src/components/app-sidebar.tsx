@@ -10,6 +10,7 @@ import {
   IconInnerShadowTop,
   IconListDetails,
   IconReport,
+  IconBook,
   IconCalendar,
   IconSettings,
   IconUsers,
@@ -51,8 +52,13 @@ const data = {
 
     {
       title: "fichas",
-      url: "#",
+      url: "/dashboard/ficha",
       icon: IconCalendar,
+    },
+    {
+      title: "carreras",
+      url: "/dashboard/carreras",
+      icon: IconBook,
     },
     {
       title: "Personas",

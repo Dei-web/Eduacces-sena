@@ -108,12 +108,21 @@ const TableRow: React.FC<TableRowProps> = ({
         </div>
       </td>
       <td className="px-4 py-3">
-        <Badge
-          variant="secondary"
-          className="bg-green-100 text-green-800 hover:bg-green-100"
-        >
-          Activo
-        </Badge>
+        {!user.estado ? (
+          <Badge
+            variant="secondary"
+            className="bg-green-100 text-green-800 hover:bg-green-100"
+          >
+            Activo
+          </Badge>
+        ) : (
+          <Badge
+            variant="secondary"
+            className="bg-red-100 text-red-800 hover:bg-red-100"
+          >
+            Inactivo
+          </Badge>
+        )}
       </td>
       <td className="px-4 py-3 text-right">
         <div className="flex items-center justify-end gap-2">
@@ -172,7 +181,12 @@ export default function UsersTable() {
   const fetchUsers = async () => {
     try {
       const users = await getUsers();
-      setData(users);
+
+      const sorted = users.sort((a, b) => {
+        return Number(a.estado) - Number(b.estado);
+      });
+
+      setData(sorted);
     } catch {
       Swal.fire({
         title: "Error",
