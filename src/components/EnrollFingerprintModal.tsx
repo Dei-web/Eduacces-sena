@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import { X, Fingerprint, CheckCircle, AlertCircle } from "lucide-react";
 import { useEnrollHuella } from "@/hooks/useEnrollHuella";
+import { X, Fingerprint, CheckCircle, AlertCircle } from "lucide-react";
 
 interface Props {
   isOpen: boolean;
@@ -10,6 +9,8 @@ interface Props {
   idPersona: number;
   apiBase?: string;
   onSuccess?: () => void;
+  mode?: "enroll" | "verify";
+  type?: "entrada" | "salida";
 }
 
 export default function EnrollFingerprintModal({
@@ -18,8 +19,17 @@ export default function EnrollFingerprintModal({
   idPersona,
   apiBase,
   onSuccess,
+  mode = "verify",
+  type = "entrada",
 }: Props) {
-  const { status, serverMsg, doEnroll, reset } = useEnrollHuella(apiBase);
+  const {
+    status,
+    serverMsg,
+    doEnroll,
+    doVerifyEntrada,
+    doVerifySalida,
+    reset,
+  } = useEnrollHuella(apiBase);
 
   const handleClose = () => {
     reset();
@@ -28,37 +38,58 @@ export default function EnrollFingerprintModal({
 
   if (!isOpen) return null;
 
+  const isEnrollMode = mode === "enroll";
+
   const ui = {
     idle: {
-      title: "Registro de huella",
-      subtitle: "Al comenzar, se te pedirá colocar y retirar el dedo.",
+      title: isEnrollMode
+        ? "Registro de huella"
+        : type === "entrada"
+          ? "Marcar Entrada"
+          : "Marcar Salida",
+      subtitle: isEnrollMode
+        ? "Al comenzar, se te pedirá colocar y retirar el dedo."
+        : "Coloca tu dedo en el sensor para marcar asistencia",
       bg: "bg-gray-100",
-      btn: "Iniciar enrolamiento",
+      btn: isEnrollMode
+        ? "Iniciar enrolamiento"
+        : type === "entrada"
+          ? "Marcar Entrada"
+          : "Marcar Salida",
       disabled: false,
       icon: <Fingerprint className="w-16 h-16 text-gray-600" />,
     },
     working: {
-      title: "Enrolando…",
-      subtitle:
-        "Sigue las indicaciones del lector: coloca el dedo (1/2), retíralo y vuelve a colocarlo (2/2).",
+      title: isEnrollMode ? "Enrolando…" : "Verificando…",
+      subtitle: isEnrollMode
+        ? "Sigue las indicaciones del lector: coloca el dedo (1/2), retíralo y vuelve a colocarlo (2/2)."
+        : "Coloca tu dedo en el sensor y mantén firme hasta que termine la verificación.",
       bg: "bg-blue-100",
       btn: "Procesando…",
       disabled: true,
       icon: <Fingerprint className="w-16 h-16 text-blue-600 animate-pulse" />,
     },
     success: {
-      title: "¡Huella enrolada!",
-      subtitle: "El lector guardó la huella correctamente.",
+      title: isEnrollMode
+        ? "¡Huella enrolada!"
+        : type === "entrada"
+          ? "¡Entrada registrada!"
+          : "¡Salida registrada!",
+      subtitle: isEnrollMode
+        ? "El lector guardó la huella correctamente."
+        : "Tu asistencia ha sido registrada correctamente.",
       bg: "bg-green-100",
       btn: "Listo",
       disabled: false,
       icon: <CheckCircle className="w-16 h-16 text-green-600" />,
     },
     error: {
-      title: "Error al enrolar",
+      title: isEnrollMode ? "Error al enrolar" : "Error al verificar",
       subtitle:
         serverMsg ||
-        "No se pudo capturar o guardar la huella. Intenta nuevamente.",
+        (isEnrollMode
+          ? "No se pudo capturar o guardar la huella. Intenta nuevamente."
+          : "No se pudo verificar la huella. Asegúrate de usar el dedo correcto."),
       bg: "bg-red-100",
       btn: "Reintentar",
       disabled: false,
@@ -67,7 +98,15 @@ export default function EnrollFingerprintModal({
   }[status];
 
   const mainAction = () => {
-    if (status === "idle") return doEnroll(idPersona, onSuccess);
+    if (status === "idle") {
+      if (isEnrollMode) {
+        return doEnroll(idPersona, onSuccess);
+      } else if (type === "entrada") {
+        return doVerifyEntrada(idPersona, onSuccess);
+      } else {
+        return doVerifySalida(idPersona, onSuccess);
+      }
+    }
     if (status === "error") return reset();
     if (status === "success") return handleClose();
   };
@@ -77,7 +116,9 @@ export default function EnrollFingerprintModal({
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-800">Captura de Huella</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            {isEnrollMode ? "Captura de Huella" : "Marcar Asistencia"}
+          </h2>
           <button
             onClick={handleClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -93,12 +134,10 @@ export default function EnrollFingerprintModal({
           >
             {ui.icon}
           </div>
-
           <h3 className="text-lg font-semibold text-gray-800 mb-2">
             {ui.title}
           </h3>
           <p className="text-gray-600 mb-4">{ui.subtitle}</p>
-
           <div className="space-y-3">
             <button
               onClick={mainAction}
@@ -108,7 +147,6 @@ export default function EnrollFingerprintModal({
             >
               {ui.btn}
             </button>
-
             <button
               onClick={handleClose}
               className="w-full py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition-colors"

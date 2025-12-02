@@ -419,13 +419,15 @@ export default function AsistenciaComponent() {
         </CardContent>
       </Card>
 
-      {/* Modal de Huella Digital */}
+      {/* Modal de Huella Digital - ✅ AGREGADO mode="verify" */}
       {selectedPersona && (
         <EnrollFingerprintModal
           isOpen={modalOpen !== null}
           onClose={handleModalClose}
           idPersona={selectedPersona}
           onSuccess={handleModalSuccess}
+          mode="verify" // ← CAMBIO IMPORTANTE: Siempre verificar para asistencias
+          type={modalOpen === "entrada" ? "entrada" : "salida"}
         />
       )}
     </div>

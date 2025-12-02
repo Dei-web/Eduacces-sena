@@ -22,6 +22,7 @@ export async function marcarEntrada(): Promise<{
       ...getAuthHeader(),
     } as HeadersInit,
   });
+  console.log(res);
 
   if (!res.ok) {
     const text = await res.text();
@@ -45,6 +46,7 @@ export async function marcarSalida(): Promise<{
   };
 }> {
   const res = await fetch(`${BASE_URL}/salida`, {
+    // ← Cambia backticks a paréntesis con template literal
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -61,7 +63,6 @@ export async function marcarSalida(): Promise<{
   if (contentType && contentType.includes("application/json")) {
     return res.json();
   }
-
   throw new Error("Respuesta no es JSON");
 }
 

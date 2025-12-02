@@ -499,6 +499,7 @@ export default function UsersTable() {
         isOpen={openEnroll}
         onClose={() => setOpenEnroll(false)}
         idPersona={personaId ?? 0}
+        mode="enroll"
       />
 
       <EditPersonaModal
