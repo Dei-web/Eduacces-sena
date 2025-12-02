@@ -49,6 +49,11 @@ const data = {
       url: "#",
       icon: IconListDetails,
     },
+    {
+      title: "materias",
+      url: "/dashboard/materias",
+      icon: IconDashboard,
+    },
 
     {
       title: "fichas",
