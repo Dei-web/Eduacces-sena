@@ -141,8 +141,8 @@ export function RegisterForm({ className }: React.ComponentProps<"form">) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="1">Directora</SelectItem>
-              <SelectItem value="2">Instructor/Profesor</SelectItem>
-              <SelectItem value="3">Estudiante</SelectItem>
+              <SelectItem value="3">Instructor/Profesor</SelectItem>
+              <SelectItem value="4">Estudiante</SelectItem>
             </SelectContent>
           </Select>
         </div>

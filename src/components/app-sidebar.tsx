@@ -46,7 +46,7 @@ const data = {
     },
     {
       title: "profesores",
-      url: "#",
+      url: "/dashboard/profesores",
       icon: IconListDetails,
     },
     {
