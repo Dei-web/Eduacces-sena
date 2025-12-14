@@ -6,7 +6,6 @@ type Status = "idle" | "working" | "success" | "error";
 export function useEnrollHuella(apiBase?: string) {
   const [status, setStatus] = useState<Status>("idle");
   const [serverMsg, setServerMsg] = useState("");
-
   const baseUrl = apiBase || "http://localhost:3000";
 
   // Función para enrolar huella (registrar nueva) - USA TU API
@@ -15,7 +14,6 @@ export function useEnrollHuella(apiBase?: string) {
     try {
       // ✅ Usa tu función de API existente
       await enrollHuella(idPersona, baseUrl);
-
       setStatus("success");
       onSuccess?.();
     } catch (error) {
@@ -45,8 +43,8 @@ export function useEnrollHuella(apiBase?: string) {
 
       const data = await response.json();
 
-      // Verificar que la huella corresponda a la persona seleccionada
-      if (data.sensorData?.data?.id_registro !== idPersona) {
+      // ✅ Verificar usando mapping.id_persona
+      if (data.mapping?.id_persona !== idPersona) {
         throw new Error("La huella no corresponde a la persona seleccionada");
       }
 
@@ -79,7 +77,8 @@ export function useEnrollHuella(apiBase?: string) {
 
       const data = await response.json();
 
-      // Para salida, verificar el id_persona del mapping o asistencia
+      // ✅ Backend retorna { success: true, data: updated }
+      // Asume que 'updated' incluye id_persona
       if (data.data?.id_persona !== idPersona) {
         throw new Error("La huella no corresponde a la persona seleccionada");
       }
